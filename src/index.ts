@@ -3,6 +3,8 @@ import 'express-async-errors';
 import dotenv from 'dotenv';
 dotenv.config();
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 import authRoute from './routes/auth.route'
 
 const app = express();
@@ -10,6 +12,9 @@ app.use(bodyParser.json());
 
 // auth routes
 app.use('/api/v1/auth', authRoute);
+
+// swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/health', (_, res) => res.json({ ok: true }));
 

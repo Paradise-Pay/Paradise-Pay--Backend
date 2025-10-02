@@ -2,10 +2,10 @@
   "name": "paradisepay-auth",
   "version": "1.0.0",
   "scripts": {
-  "dev": "nodemon --exec tsx src/index.ts",
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "migrate": "tsx src/migrate.ts"
+    "dev": "nodemon --exec tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "migrate": "tsx src/migrate.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -15,6 +15,8 @@
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.0",
     "nodemailer": "^6.9.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -23,6 +25,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.0.0",
     "@types/nodemailer": "^7.0.2",
+    "@types/swagger-ui-express": "^4.1.8",
     "@types/uuid": "^10.0.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.1",

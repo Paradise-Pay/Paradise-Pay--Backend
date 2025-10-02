@@ -13,6 +13,7 @@ dotenv.config();
 const BCRYPT_SALT_ROUNDS = 12;
 
 export async function signup(req: Request, res: Response) {
+  try {
   const { name, email, phone, password, nickname } = req.body;
   if (!name || !email || !password) return res.status(400).json({ message: 'Missing fields' });
   const existing = await findUserByEmail(email);
@@ -30,10 +31,14 @@ export async function signup(req: Request, res: Response) {
   const verifyUrl = `${req.protocol}://${req.get('host')}/auth/verify-email?token=${verifyToken}`;
   await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`);
 
-  return res.status(201).json({ message: 'User created. Verification email sent.' });
+    return res.status(201).json({ message: 'User created. Verification email sent.' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 }
 
 export async function login(req: Request, res: Response) {
+  try {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ message: 'Missing fields' });
 
@@ -60,6 +65,9 @@ export async function login(req: Request, res: Response) {
   await pool.execute('INSERT INTO audit_logs (user_id, action, ip, user_agent, meta) VALUES (?, ?, ?, ?, ?)', [user.user_id, 'login_success', req.ip, req.headers['user-agent']?.toString(), JSON.stringify({})]);
 
   return res.json({ accessToken, refreshToken, user: { user_id: user.user_id, email: user.email, name: user.name, role: user.role } });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 }
 
 export async function refresh(req: Request, res: Response) {
@@ -80,10 +88,14 @@ export async function refresh(req: Request, res: Response) {
 }
 
 export async function logout(req: Request, res: Response) {
+  try {
   const { refreshToken } = req.body;
   if (!refreshToken) return res.status(400).json({ message: 'Missing refresh token' });
   await revokeRefreshTokenByHash(refreshToken);
   return res.json({ message: 'Logged out' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 }
 
 export async function verifyEmailHandler(req: Request, res: Response) {
