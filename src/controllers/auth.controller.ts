@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { createUser, findUserByEmail, findUserById, setEmailVerified, updatePassword } from '../repositories/user.repo.js';
-import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../services/jwt.service.js';
+import { signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken } from '../services/jwt.service.js';
 import { storeRefreshToken, revokeRefreshTokenByHash, findRefreshToken } from '../repositories/token.repo.js';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
@@ -102,18 +102,20 @@ export async function verifyEmailHandler(req: Request, res: Response) {
   const { token } = req.query;
   if (!token) return res.status(400).send('Missing token');
   try {
-    const payload = verifyRefreshToken(token as string); // reuse or better: verifyAccessToken with small secret
-    // expecting sub
-    // for safety, decode and ensure action=verify-email if used earlier
-    const parsed: any = payload;
-    await setEmailVerified(parsed.sub);
-    return res.send('Email verified');
+    const payload = verifyAccessToken(token as string) as any; // ✅ use access token verifier
+    if (payload.action !== 'verify-email') {
+      return res.status(400).send('Invalid token type');
+    }
+    await setEmailVerified(payload.sub);
+    return res.send('Email verified successfully ✅');
   } catch (err) {
+    console.error(err);
     return res.status(400).send('Invalid or expired token');
   }
 }
 
 export async function resetPasswordRequest(req: Request, res: Response) {
+  try {
   const { email } = req.body;
   if (!email) return res.status(400).json({ message: 'Missing email' });
   const user = await findUserByEmail(email);
@@ -122,13 +124,17 @@ export async function resetPasswordRequest(req: Request, res: Response) {
   const resetUrl = `${req.protocol}://${req.get('host')}/auth/reset-password?token=${token}`;
   await sendEmail(email, 'Reset your password', `<p>Reset link: <a href="${resetUrl}">${resetUrl}</a></p>`);
   return res.json({ message: 'If an account exists, a reset email was sent' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+    console.error(error);
+  }
 }
 
 export async function resetPassword(req: Request, res: Response) {
   const { token, newPassword } = req.body;
   if (!token || !newPassword) return res.status(400).json({ message: 'Missing fields' });
   try {
-    const payload: any = verifyRefreshToken(token);
+    const payload: any = verifyRefreshToken(token) as any;
     if (payload.action !== 'reset-password') return res.status(400).json({ message: 'Invalid token' });
     const userId = payload.sub;
     const hash = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS);
@@ -136,5 +142,6 @@ export async function resetPassword(req: Request, res: Response) {
     return res.json({ message: 'Password updated' });
   } catch (err) {
     return res.status(400).json({ message: 'Invalid or expired token' });
+    console.error(err);
   }
 }
