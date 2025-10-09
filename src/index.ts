@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './config/swagger';
-import authRoute from './routes/auth.route'
+import swaggerSpec from './config/swagger.js';
+import authRoute from './routes/auth.route.js'
 
 const app = express();
 app.use(bodyParser.json());

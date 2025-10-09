@@ -102,7 +102,7 @@ import {
     resetPassword,
     resetPasswordRequest,
     verifyEmailHandler
-} from "../controllers/auth.controller"
+} from "../controllers/auth.controller.js"
 
 const router = Router();
 
