@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc && cp src/config/swagger.yaml dist/config/swagger.yaml"
-,
+    "build": "tsc",
     "start": "node dist/index.js",
     "migrate": "tsx src/migrate.ts"
   },
