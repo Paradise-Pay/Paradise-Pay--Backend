@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS paradisepay CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE paradisepay;
+CREATE DATABASE IF NOT EXISTS railway CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE railway;
 
 -- users
 CREATE TABLE IF NOT EXISTS users (
