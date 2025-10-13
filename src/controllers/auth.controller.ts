@@ -33,6 +33,7 @@ export async function signup(req: Request, res: Response) {
 
     return res.status(201).json({ message: 'User created. Verification email sent.' });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 }
