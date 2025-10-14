@@ -24,7 +24,6 @@ const router = Router();
 const authenticateToken = async (req: any, res: any, next: any) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log('authHeader', authHeader);
 
     if (!authHeader) {
       return res.status(401).json({ message: 'Authorization header required' });
@@ -36,8 +35,6 @@ const authenticateToken = async (req: any, res: any, next: any) => {
     } else {
       token = authHeader;
     }
-
-    console.log('token', token);
 
     const payload = verifyAccessToken(token) as any;
     const user = await findUserById(payload.sub);
