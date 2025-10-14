@@ -48,7 +48,7 @@ async function debugSeeding() {
         const [users] = await conn.execute('SELECT COUNT(*) as count FROM users');
         console.log('👥 Users count:', (users as any[])[0].count);
       } catch (error) {
-        console.log('❌ Users table query failed:', error.message);
+        console.log('❌ Users table query failed:', (error as Error).message);
       }
       
     } else {
@@ -57,7 +57,7 @@ async function debugSeeding() {
     }
     
   } catch (error) {
-    console.error('❌ Database connection failed:', error.message);
+    console.error('❌ Database connection failed:', (error as Error).message);
     console.error('Full error:', error);
   } finally {
     if (conn) {

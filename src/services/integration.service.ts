@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { createEvent } from '../repositories/event.repo.js';
 
 export interface TicketmasterEvent {
@@ -227,8 +227,8 @@ export interface ThirdPartyEventSearchParams {
 }
 
 class IntegrationService {
-  private ticketmasterClient: AxiosInstance;
-  private eventbriteClient: AxiosInstance;
+  private ticketmasterClient: ReturnType<typeof axios.create>;
+  private eventbriteClient: ReturnType<typeof axios.create>;
 
   constructor() {
     // Initialize Ticketmaster client
@@ -284,11 +284,11 @@ class IntegrationService {
         searchParams.classificationId = categoryMapping[params.category.toLowerCase()] || '';
       }
 
-      const response: AxiosResponse = await this.ticketmasterClient.get('/events.json', {
+      const response = await this.ticketmasterClient.get('/events.json', {
         params: searchParams
       });
 
-      const events = response.data._embedded?.events || [];
+      const events = (response.data as any)._embedded?.events || [];
       return events.map(this.normalizeTicketmasterEvent);
 
     } catch (error) {
@@ -315,11 +315,11 @@ class IntegrationService {
       if (params.date_to) searchParams.start_date.range_end = params.date_to;
       if (params.category) searchParams.categories = params.category;
 
-      const response: AxiosResponse = await this.eventbriteClient.get('/events/search/', {
+      const response = await this.eventbriteClient.get('/events/search/', {
         params: searchParams
       });
 
-      const events = response.data.events || [];
+      const events = (response.data as any).events || [];
       return events.map(this.normalizeEventbriteEvent);
 
     } catch (error) {
@@ -333,13 +333,13 @@ class IntegrationService {
    */
   async getTicketmasterEventDetails(eventId: string): Promise<TicketmasterEvent | null> {
     try {
-      const response: AxiosResponse = await this.ticketmasterClient.get(`/events/${eventId}.json`, {
+      const response = await this.ticketmasterClient.get(`/events/${eventId}.json`, {
         params: {
           apikey: process.env.TICKETMASTER_API_KEY
         }
       });
 
-      return this.normalizeTicketmasterEvent(response.data);
+      return this.normalizeTicketmasterEvent(response.data as any);
 
     } catch (error) {
       console.error('Error getting Ticketmaster event details:', error);
@@ -352,13 +352,13 @@ class IntegrationService {
    */
   async getEventbriteEventDetails(eventId: string): Promise<EventbriteEvent | null> {
     try {
-      const response: AxiosResponse = await this.eventbriteClient.get(`/events/${eventId}/`, {
+      const response = await this.eventbriteClient.get(`/events/${eventId}/`, {
         params: {
           expand: 'venue,organizer,logo'
         }
       });
 
-      return this.normalizeEventbriteEvent(response.data);
+      return this.normalizeEventbriteEvent(response.data as any);
 
     } catch (error) {
       console.error('Error getting Eventbrite event details:', error);
@@ -556,8 +556,8 @@ class IntegrationService {
    */
   async getTicketmasterCategories(): Promise<any[]> {
     try {
-      const response: AxiosResponse = await this.ticketmasterClient.get('/classifications.json');
-      return response.data._embedded?.classifications || [];
+      const response = await this.ticketmasterClient.get('/classifications.json');
+      return (response.data as any)._embedded?.classifications || [];
     } catch (error) {
       console.error('Error getting Ticketmaster categories:', error);
       return [];
@@ -569,8 +569,8 @@ class IntegrationService {
    */
   async getEventbriteCategories(): Promise<any[]> {
     try {
-      const response: AxiosResponse = await this.eventbriteClient.get('/categories/');
-      return response.data.categories || [];
+      const response = await this.eventbriteClient.get('/categories/');
+      return (response.data as any).categories || [];
     } catch (error) {
       console.error('Error getting Eventbrite categories:', error);
       return [];

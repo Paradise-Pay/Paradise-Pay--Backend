@@ -77,7 +77,7 @@ async function runQueryTests() {
     console.log('\n9️⃣ Testing booking details...');
     const bookingDetails = await getBookingWithDetails(bookingId);
     console.log(`   ✅ Booking details retrieved`);
-    console.log(`   💰 Total: ${bookingDetails?.total_amount} ${bookingDetails?.currency}`);
+    console.log(`   💰 Total: ${bookingDetails?.booking.total_amount} ${bookingDetails?.booking.currency}`);
 
     // Test 10: Get Ticket Details
     console.log('\n🔟 Testing ticket details...');

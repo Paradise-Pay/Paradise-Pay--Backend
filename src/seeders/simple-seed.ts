@@ -66,7 +66,7 @@ async function simpleSeed() {
       ]);
       console.log('✅ User insertion test successful');
     } catch (error) {
-      console.log('❌ User insertion failed:', error.message);
+      console.log('❌ User insertion failed:', (error as Error).message);
     }
     
     // Count users
@@ -74,7 +74,7 @@ async function simpleSeed() {
     console.log(`👥 Total users in database: ${(users as any[])[0].count}`);
     
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('❌ Error:', (error as Error).message);
     console.error('Full error:', error);
   } finally {
     if (conn) {
