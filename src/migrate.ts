@@ -6,10 +6,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function run() {
-  const sql = fs.readFileSync(
+  const initSql = fs.readFileSync(
     path.join(process.cwd(), 'src', 'migrations', '001_init.sql'),
     'utf-8'
   );
+  
+  const eventSql = fs.readFileSync(
+    path.join(process.cwd(), 'src', 'migrations', '002_event_ticketing.sql'),
+    'utf-8'
+  );
+  
+  const sql = initSql + '\n' + eventSql;
 
   // connect without DB first
   const conn = await mysql.createConnection({

@@ -6,9 +6,18 @@
     "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "migrate": "tsx src/migrate.ts"
+    "migrate": "tsx src/migrate.ts",
+    "seed": "tsx src/seeders/seed.ts",
+    "seed:dev": "npm run migrate && npm run seed",
+    "test:queries": "tsx src/test/queries.test.ts",
+    "test:db": "tsx src/test/simple.test.ts",
+    "debug:db": "tsx src/seeders/debug-seed.ts",
+    "simple-seed": "tsx src/seeders/simple-seed.ts"
   },
   "dependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/qrcode": "^1.5.5",
+    "axios": "^1.12.2",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",
@@ -16,6 +25,7 @@
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.0",
     "nodemailer": "^6.9.0",
+    "qrcode": "^1.5.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^9.0.0"

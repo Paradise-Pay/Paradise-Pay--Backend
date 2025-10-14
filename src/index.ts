@@ -6,12 +6,24 @@ import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
 import authRoute from './routes/auth.route.js'
+import eventRoute from './routes/event.route.js'
+import ticketRoute from './routes/ticket.route.js'
+import integrationRoute from './routes/integration.route.js'
 
 const app = express();
 app.use(bodyParser.json());
 
 // auth routes
 app.use('/api/v1/auth', authRoute);
+
+// event routes
+app.use('/api/v1/events', eventRoute);
+
+// ticket routes
+app.use('/api/v1/tickets', ticketRoute);
+
+// integration routes
+app.use('/api/v1/integrations', integrationRoute);
 
 // swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

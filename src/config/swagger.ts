@@ -6,17 +6,30 @@ const options: Options = {
     info: {
       title: 'ParadisePay API',
       version: '1.0.0',
-      description: 'API documentation for ParadisePay authentication system',
+      description: 'API documentation for ParadisePay - Digital Payment and Event Ticketing System',
     },
     servers: [
       {
-        url: 'http://localhost:4000', // change for prod later
+        url: 'http://localhost:4000',
         description: 'Local dev server',
       },
+      {
+        url: 'https://paradise-pay-backend-production-e0db.up.railway.app/',
+        description: 'Production server',
+      },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
-  // where to look for API docs (routes folder)
-  apis: ['./src/routes/*.ts'],
+  // where to look for API docs (routes and controllers folders)
+  apis: ['./src/routes/*.ts', './src/controllers/*.ts'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
