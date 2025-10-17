@@ -1,6 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
@@ -11,6 +12,11 @@ import ticketRoute from './routes/ticket.route.js'
 import integrationRoute from './routes/integration.route.js'
 
 const app = express();
+app.use(cors({
+  origin: ["http://localhost:3000", "https://paradise-pay-webapp-production.up.railway.app"],
+  credentials: true,
+}));
+
 app.use(bodyParser.json());
 
 // auth routes
