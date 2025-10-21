@@ -1,6 +1,6 @@
 /**
  * @openapi
- * /auth/signup:
+ * /api/v1/auth/signup:
  *   post:
  *     summary: Register a new user
  *     tags:
@@ -41,7 +41,7 @@
 
 /**
  * @openapi
- * /auth/login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: Login user
  *     tags:
@@ -71,7 +71,7 @@
 
 /**
  * @openapi
- * /auth/logout:
+ * /api/v1/auth/logout:
  *   post:
  *     summary: Logout user
  *     tags:
