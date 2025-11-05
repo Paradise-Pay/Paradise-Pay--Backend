@@ -28,7 +28,7 @@ export async function signup(req: Request, res: Response) {
 
   // email verification token (short-lived)
   const verifyToken = signAccessToken({ sub: user.user_id, action: 'verify-email' });
-  const verifyUrl = `${req.protocol}://${req.get('host')}/auth/verify-email?token=${verifyToken}`;
+  const verifyUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email?token=${verifyToken}`;
   await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`);
 
     return res.status(201).json({ message: 'User created. Verification email sent.' });
@@ -122,7 +122,7 @@ export async function resetPasswordRequest(req: Request, res: Response) {
   const user = await findUserByEmail(email);
   if (!user) return res.status(200).json({ message: 'If an account exists, a reset email was sent' }); // do not leak
   const token = signAccessToken({ sub: user.user_id, action: 'reset-password' });
-  const resetUrl = `${req.protocol}://${req.get('host')}/auth/reset-password?token=${token}`;
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password?token=${token}`;
   await sendEmail(email, 'Reset your password', `<p>Reset link: <a href="${resetUrl}">${resetUrl}</a></p>`);
   return res.json({ message: 'If an account exists, a reset email was sent' });
   } catch (error) {
