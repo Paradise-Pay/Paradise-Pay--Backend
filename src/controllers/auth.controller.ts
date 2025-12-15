@@ -27,11 +27,11 @@ export async function signup(req: Request, res: Response) {
   await pool.execute('INSERT INTO digital_cards (card_id, user_id, card_number) VALUES (?, ?, ?)', [cardId, user.user_id, cardNumber]);
 
   // email verification token (short-lived)
-  const verifyToken = signAccessToken({ sub: user.user_id, action: 'verify-email' });
-  const verifyUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email?token=${verifyToken}`;
-  await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`);
+  // const verifyToken = signAccessToken({ sub: user.user_id, action: 'verify-email' });
+  // const verifyUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email?token=${verifyToken}`;
+  // await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`);
 
-    return res.status(201).json({ message: 'User created. Verification email sent.' });
+    return res.status(201).json({ message: 'User created.' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
