@@ -34,6 +34,9 @@ app.use('/api/v1/integrations', integrationRoute);
 // swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// root route — redirect to API docs
+app.get('/', (_, res) => res.redirect('/api-docs'));
+
 app.get('/health', (_, res) => res.json({ ok: true }));
 
 const port = +(process.env.PORT ?? 4000);

@@ -15,7 +15,7 @@ async function run() {
     path.join(process.cwd(), 'src', 'migrations', '002_event_ticketing.sql'),
     'utf-8'
   );
-  
+
   const sql = initSql + '\n' + eventSql;
 
   // connect without DB first

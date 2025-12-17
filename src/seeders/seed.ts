@@ -111,8 +111,8 @@ async function seedUsers(conn: any) {
     },
     {
       user_id: 'admin-1',
-      name: 'Admin User',
-      email: 'admin@example.com',
+      name: 'Paradise Pay Admin',
+      email: 'getparadisepay@gmail.com',
       phone: '+1234567893',
       password_hash: await bcrypt.hash('password123', BCRYPT_SALT_ROUNDS),
       role: 'Admin',

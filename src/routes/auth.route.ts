@@ -101,7 +101,8 @@ import {
     logout,
     resetPassword,
     resetPasswordRequest,
-    verifyEmailHandler
+    verifyEmailHandler,
+    getResetPasswordForm
 } from "../controllers/auth.controller.js"
 
 const router = Router();
@@ -111,6 +112,7 @@ router.post("/login", login);
 router.post("/logout", logout);
 router.post("/reset-password", resetPassword);
 router.post("/reset-password-request", resetPasswordRequest);
+router.get("/reset-password", getResetPasswordForm);
 router.post("/verify-email", verifyEmailHandler);
 
 export default router;

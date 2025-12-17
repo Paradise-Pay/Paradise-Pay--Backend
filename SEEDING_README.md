@@ -46,7 +46,12 @@ Runs comprehensive tests on all database queries and operations.
 ### Users
 - **Regular Users**: `user@example.com`, `jane@example.com` (password: `password123`)
 - **Organizer**: `organizer@example.com` (password: `password123`)
-- **Admin**: `admin@example.com` (password: `password123`)
+- **Admin**: `getparadisepay@gmail.com` (password: `password123`)
+
+#### User Roles
+- **User**: Regular platform users who can browse events and purchase tickets
+- **Organizer**: Event organizers who can create and manage their own events
+- **Admin**: Platform administrators with elevated permissions for system management
 
 ### Events
 1. **Summer Music Festival 2024** (Featured)
