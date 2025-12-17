@@ -40,4 +40,14 @@ app.get('/', (_, res) => res.redirect('/api-docs'));
 app.get('/health', (_, res) => res.json({ ok: true }));
 
 const port = +(process.env.PORT ?? 4000);
-app.listen(port, () => console.log(`Server listening on ${port}`));
+const server = app.listen(port, () => console.log(`Server listening on ${port}`));
+
+server.on('error', (err: any) => {
+  if (err && err.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Kill the process using it or set a different PORT.`);
+    console.error('On Windows: run `netstat -ano | findstr :'+port+'` then `taskkill /PID <pid> /F`.');
+    process.exit(1);
+  }
+  console.error('Server error', err);
+  process.exit(1);
+});
