@@ -31,7 +31,71 @@ export async function signup(req: Request, res: Response) {
   try {
     const verifyToken = signAccessToken({ sub: user.user_id, action: 'verify-email' });
     const verifyUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email?token=${verifyToken}`;
-    await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`); 
+    await sendEmail(
+      user.email,
+      'Verify Your ParadisePay Email Address',
+      `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px;">ParadisePay</h1>
+        </div>
+        
+        <div style="padding: 30px; background-color: #f9f9f9;">
+          <h2 style="color: #333; margin-top: 0;">Email Verification Required</h2>
+          
+          <p style="margin-bottom: 20px;">Dear ${user.name || 'ParadisePay User'},</p>
+          
+          <p style="margin-bottom: 20px;">Thank you for registering with ParadisePay. To complete your account setup, please verify your email address by clicking the button below:</p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${verifyUrl}" 
+               style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                      color: white; 
+                      padding: 12px 30px; 
+                      text-decoration: none; 
+                      border-radius: 5px; 
+                      font-weight: bold;
+                      display: inline-block;">
+              Verify My Email Address
+            </a>
+          </div>
+          
+          <p style="margin-bottom: 20px; font-size: 14px; color: #666;">
+            If the button above doesn't work, you can copy and paste the following URL into your browser:
+          </p>
+          
+          <div style="background-color: #fff; 
+                      border-left: 4px solid #667eea; 
+                      padding: 12px; 
+                      margin: 20px 0;
+                      word-break: break-all;
+                      font-size: 13px;
+                      color: #555;">
+            ${verifyUrl}
+          </div>
+          
+          <p style="margin-bottom: 20px;">This verification step ensures the security of your account and allows you to access all ParadisePay features.</p>
+          
+          <p style="margin-bottom: 20px;">If you did not create an account with ParadisePay, please disregard this email or contact our support team for assistance.</p>
+          
+          <p>Thank you for choosing ParadisePay. We look forward to serving you!</p>
+        </div>
+        
+        <div style="background-color: #f0f0f0; padding: 20px; text-align: center; font-size: 12px; color: #666;">
+          <p style="margin: 5px 0;">ParadisePay Support</p>
+          <p style="margin: 5px 0;">
+            <a href="mailto:support@paradisepay.com" style="color: #667eea;">support@paradisepay.com</a>
+          </p>
+          <p style="margin: 5px 0;">
+            <a href="https://www.paradisepay.com" style="color: #667eea;">www.paradisepay.com</a>
+          </p>
+          <p style="margin: 10px 0 0 0; font-size: 11px; color: #999;">
+            This is an automated message. Please do not reply to this email.
+          </p>
+        </div>
+      </div>
+      `
+    );
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Failed to send verification email' });
