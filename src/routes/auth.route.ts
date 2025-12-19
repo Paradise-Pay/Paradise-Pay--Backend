@@ -15,7 +15,7 @@
  *               - name
  *               - email
  *               - password
- *               
+ *               - role
  *             properties:
  *               name:
  *                 type: string
@@ -32,6 +32,9 @@
  *               nickname:
  *                 type: string
  *                 example: John Doe
+ *               role:
+ *                 type: string
+ *                 example: User
  *     responses:
  *       201:
  *         description: User created successfully
@@ -94,6 +97,87 @@
  *       500:
  *         description: Internal server error
  */
+
+/**
+ * @openapi
+ * /api/v1/auth/verify-email:
+ *   get:
+ *     summary: Verify email
+ *     tags:
+ *       - Authentication
+ *     parameters:
+ *       - name: token
+ *         in: query
+ *         required: true
+ *         type: string
+ *         example: 1234567890
+ *     responses:
+ *       200:
+ *         description: Email verified successfully
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @openapi
+ * /api/v1/auth/reset-password:
+ *   post:
+ *     summary: Reset password
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *               - newPassword
+ *               - confirmPassword
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 example: 1234567890
+ *               newPassword:
+ *                 type: string
+ *                 example: StrongPass123
+ *               confirmPassword:
+ *                 type: string
+ *                 example: StrongPass123
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @openapi
+ * /api/v1/auth/reset-password-request:
+ *   post:
+ *     summary: Reset password request
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: john@example.com
+ *     responses:
+ *       200:
+ *         description: Password reset request sent successfully
+ *       500:
+ *         description: Internal server error
+ */
+
 import { Router  } from "express";
 import {
     signup,

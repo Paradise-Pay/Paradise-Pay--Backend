@@ -14,14 +14,14 @@ const BCRYPT_SALT_ROUNDS = 12;
 
 export async function signup(req: Request, res: Response) {
   try {
-  const { name, email, phone, password, nickname } = req.body;
+  const { name, email, phone, password, nickname, role } = req.body;
   console.log(req.body);
-  if (!name || !email || !password) return res.status(400).json({ message: 'Missing fields' });
+  if (!name || !email || !password || !role) return res.status(400).json({ message: 'Missing fields' });
   const existing = await findUserByEmail(email);
   if (existing) return res.status(409).json({ message: 'Email already used' });
 
   const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
-  const user = await createUser({ name, email, phone, passwordHash: hash });
+  const user = await createUser({ name, email, phone, passwordHash: hash, role });
   // generate card number & qr (simple random here; replace with business format)
   const cardNumber = `PP${Math.floor(100000000 + Math.random()*900000000)}`;
   const cardId = uuidv4();
@@ -110,34 +110,64 @@ export async function signup(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   try {
-  const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ message: 'Missing fields' });
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ 
+      success: false,
+      message: 'Missing fields' 
+    });
 
-  const user = await findUserByEmail(email);
-  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    const user = await findUserByEmail(email);
+    if (!user) return res.status(401).json({ 
+      success: false,
+      message: 'Invalid credentials' 
+    });
 
-  const ok = await bcrypt.compare(password, user.password_hash);
-  if (!ok) {
-    await pool.execute('INSERT INTO audit_logs (user_id, action, ip, user_agent, meta) VALUES (?, ?, ?, ?, ?)', [user.user_id, 'login_failed', req.ip, req.headers['user-agent']?.toString(), JSON.stringify({ email })]);
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
+    const ok = await bcrypt.compare(password, user.password_hash);
+    if (!ok) {
+      await pool.execute('INSERT INTO audit_logs (user_id, action, ip, user_agent, meta) VALUES (?, ?, ?, ?, ?)', [user.user_id, 'login_failed', req.ip, req.headers['user-agent']?.toString(), JSON.stringify({ email })]);
+      return res.status(401).json({ 
+        success: false,
+        message: 'Invalid credentials' 
+      });
+    }
 
-  if (user.mfa_enabled) {
-    // TODO: start MFA flow (TOTP push) — for now indicate MFA required
-    return res.status(200).json({ mfa_required: true, message: 'MFA required' });
-  }
+    if (user.mfa_enabled) {
+      return res.status(200).json({ 
+        success: true,
+        mfa_required: true, 
+        message: 'MFA required',
+        user: { user_id: user.user_id, email: user.email }
+      });
+    }
 
-  const accessToken = signAccessToken({ sub: user.user_id, role: user.role });
-  const refreshToken = signRefreshToken({ sub: user.user_id });
-  // store refresh token hash
-  const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30); // match REFRESH_TOKEN_EXPIRY
-  await storeRefreshToken(user.user_id, refreshToken, expiresAt);
+    const accessToken = signAccessToken({ sub: user.user_id, role: user.role });
+    const refreshToken = signRefreshToken({ sub: user.user_id });
+    
+    const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
+    await storeRefreshToken(user.user_id, refreshToken, expiresAt);
 
-  await pool.execute('INSERT INTO audit_logs (user_id, action, ip, user_agent, meta) VALUES (?, ?, ?, ?, ?)', [user.user_id, 'login_success', req.ip, req.headers['user-agent']?.toString(), JSON.stringify({})]);
+    await pool.execute('INSERT INTO audit_logs (user_id, action, ip, user_agent, meta) VALUES (?, ?, ?, ?, ?)', [user.user_id, 'login_success', req.ip, req.headers['user-agent']?.toString(), JSON.stringify({})]);
 
-  return res.json({ accessToken, refreshToken, user: { user_id: user.user_id, email: user.email, name: user.name, role: user.role } });
+    return res.json({ 
+      success: true,
+      data: {
+        accessToken, 
+        refreshToken, 
+        user: { 
+          user_id: user.user_id, 
+          email: user.email, 
+          name: user.name, 
+          role: user.role 
+        }
+      },
+      message: 'Login successful'
+    });
+    
   } catch (error) {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ 
+      success: false,
+      message: 'Internal server error' 
+    });
   }
 }
 
