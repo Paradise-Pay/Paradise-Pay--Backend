@@ -15,6 +15,7 @@ const BCRYPT_SALT_ROUNDS = 12;
 export async function signup(req: Request, res: Response) {
   try {
   const { name, email, phone, password, nickname } = req.body;
+  console.log(req.body);
   if (!name || !email || !password) return res.status(400).json({ message: 'Missing fields' });
   const existing = await findUserByEmail(email);
   if (existing) return res.status(409).json({ message: 'Email already used' });
@@ -27,9 +28,14 @@ export async function signup(req: Request, res: Response) {
   await pool.execute('INSERT INTO digital_cards (card_id, user_id, card_number) VALUES (?, ?, ?)', [cardId, user.user_id, cardNumber]);
 
   // email verification token (short-lived)
-  // const verifyToken = signAccessToken({ sub: user.user_id, action: 'verify-email' });
-  // const verifyUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email?token=${verifyToken}`;
-  // await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`);
+  try {
+    const verifyToken = signAccessToken({ sub: user.user_id, action: 'verify-email' });
+    const verifyUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email?token=${verifyToken}`;
+    await sendEmail(user.email, 'Verify your ParadisePay email', `<p>Click <a href="${verifyUrl}">here</a> to verify.</p>`); 
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Failed to send verification email' });
+  }
 
     return res.status(201).json({ message: 'User created.' });
   } catch (error) {
