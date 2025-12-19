@@ -241,8 +241,197 @@ export async function resetPasswordRequest(req: Request, res: Response) {
     const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password?token=${token}`;
 
     try {
-      await sendEmail(email, 'Reset your password', `<p>Click <a href="${resetUrl}">here</a> to reset your password.</p><p>This link will expire in 15 minutes.</p>`);
-      console.log('Password reset email sent successfully to:', email);
+      await sendEmail(
+        email,
+        'Reset Your ParadisePay Password',
+        `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Reset Your Password - ParadisePay</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              line-height: 1.6;
+              color: #333;
+              margin: 0;
+              padding: 0;
+              background-color: #f8f9fa;
+            }
+            .email-container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .email-header {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              padding: 40px 30px;
+              text-align: center;
+            }
+            .email-header h1 {
+              color: white;
+              margin: 0;
+              font-size: 28px;
+              font-weight: 600;
+            }
+            .email-body {
+              padding: 40px 30px;
+            }
+            .email-body h2 {
+              color: #2d3748;
+              margin-top: 0;
+              font-size: 24px;
+              font-weight: 600;
+            }
+            .email-body p {
+              color: #4a5568;
+              margin-bottom: 20px;
+              font-size: 16px;
+            }
+            .reset-button {
+              display: inline-block;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              text-decoration: none;
+              padding: 16px 32px;
+              border-radius: 8px;
+              font-weight: 600;
+              font-size: 16px;
+              text-align: center;
+              margin: 25px 0;
+              transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .reset-button:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            }
+            .token-box {
+              background-color: #f7fafc;
+              border-left: 4px solid #667eea;
+              padding: 16px;
+              margin: 25px 0;
+              border-radius: 4px;
+              word-break: break-all;
+              font-family: 'Courier New', monospace;
+              font-size: 14px;
+              color: #4a5568;
+            }
+            .security-note {
+              background-color: #fff5f5;
+              border: 1px solid #fed7d7;
+              border-radius: 8px;
+              padding: 20px;
+              margin: 30px 0;
+            }
+            .security-note h4 {
+              color: #c53030;
+              margin-top: 0;
+              font-size: 16px;
+            }
+            .expiry-notice {
+              background-color: #f0fff4;
+              border: 1px solid #c6f6d5;
+              border-radius: 8px;
+              padding: 16px;
+              margin: 20px 0;
+              color: #276749;
+              font-weight: 500;
+            }
+            .email-footer {
+              background-color: #f8f9fa;
+              padding: 25px 30px;
+              text-align: center;
+              border-top: 1px solid #e2e8f0;
+            }
+            .footer-links {
+              margin: 15px 0;
+            }
+            .footer-links a {
+              color: #667eea;
+              text-decoration: none;
+              margin: 0 10px;
+              font-size: 14px;
+            }
+            .footer-text {
+              color: #718096;
+              font-size: 13px;
+              line-height: 1.5;
+              margin-top: 15px;
+            }
+            .logo {
+              font-size: 24px;
+              font-weight: 700;
+              color: white;
+              text-decoration: none;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <div class="email-header">
+              <div class="logo">ParadisePay</div>
+            </div>
+            
+            <div class="email-body">
+              <h2>Password Reset Request</h2>
+              
+              <p>Hello,</p>
+              
+              <p>We received a request to reset your password for your ParadisePay account. If you made this request, please click the button below to create a new password:</p>
+              
+              <div style="text-align: center;">
+                <a href="${resetUrl}" class="reset-button">
+                  Reset Your Password
+                </a>
+              </div>
+              
+              <div class="expiry-notice">
+                ⏰ This link will expire in <strong>15 minutes</strong> for security reasons.
+              </div>
+              
+              <p>If the button above doesn't work, you can copy and paste the following link into your browser:</p>
+              
+              <div class="token-box">
+                ${resetUrl}
+              </div>
+              
+              <div class="security-note">
+                <h4>🔒 Security Notice</h4>
+                <p>If you did not request a password reset, please ignore this email. Your account remains secure, and no changes have been made.</p>
+                <p>For your protection, never share your password or this reset link with anyone.</p>
+              </div>
+              
+              <p>Need help? Our support team is here for you.</p>
+              
+              <p>Best regards,<br>
+              <strong>The ParadisePay Team</strong></p>
+            </div>
+            
+            <div class="email-footer">
+              <div class="footer-links">
+                <a href="https://paradisepay.com">Website</a>
+                <a href="https://paradisepay.com/help">Help Center</a>
+                <a href="https://paradisepay.com/privacy">Privacy Policy</a>
+                <a href="https://paradisepay.com/terms">Terms of Service</a>
+              </div>
+              
+              <div class="footer-text">
+                <p>© ${new Date().getFullYear()} ParadisePay. All rights reserved.</p>
+                <p>This is an automated message. Please do not reply to this email.</p>
+                <p>If you have any questions, contact us at <a href="mailto:support@paradisepay.com" style="color: #667eea;">support@paradisepay.com</a></p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+        `
+      );
+      console.log('Password reset email sent successfully to:', email, resetUrl);
 
       // Log the reset request in audit logs
       await pool.execute('INSERT INTO audit_logs (user_id, action, ip, user_agent, meta) VALUES (?, ?, ?, ?, ?)',
@@ -253,7 +442,7 @@ export async function resetPasswordRequest(req: Request, res: Response) {
       return res.status(500).json({ message: 'Failed to send reset email. Please try again later.' });
     }
 
-    return res.json({ message: 'If an account exists, a reset email was sent' });
+    return res.json({ message: 'Reset email sent successfully' });
   } catch (error) {
     console.error('Password reset request error:', error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -265,6 +454,7 @@ export async function resetPassword(req: Request, res: Response) {
   if (!token || !newPassword) return res.status(400).json({ message: 'Missing fields' });
   try {
     const payload: any = verifyAccessToken(token) as any;
+    console.log(payload);
     if (payload.action !== 'reset-password') return res.status(400).json({ message: 'Invalid token' });
     const userId = payload.sub;
     const hash = await bcrypt.hash(newPassword, BCRYPT_SALT_ROUNDS);
