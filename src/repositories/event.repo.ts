@@ -229,6 +229,12 @@ export async function searchEvents(filters: EventSearchFilters = {}, options: Ev
     sort_by = 'event_date', 
     sort_order = 'ASC' 
   } = options;
+
+  // ✅ 1. SANITIZE NUMBERS FIRST
+  // Convert to pure numbers. If invalid, default to 20 and 0.
+  const safeLimit = Number(limit) || 20;
+  const safePage = Number(page) || 1;
+  const safeOffset = (safePage - 1) * safeLimit;
   
   let whereConditions: string[] = [];
   let queryParams: any[] = [];
@@ -290,12 +296,10 @@ export async function searchEvents(filters: EventSearchFilters = {}, options: Ev
     queryParams.push(is_featured ? 1 : 0);
   }
   
-  // Location-based search using Haversine formula
+  // Location-based search
   if (latitude && longitude && radius) {
     whereConditions.push(`
-      (6371 * acos(cos(radians(?)) * cos(radians(e.latitude)) * 
-       cos(radians(e.longitude) - radians(?)) + sin(radians(?)) * 
-       sin(radians(e.latitude)))) <= ?
+      (6371 * acos(cos(radians(?)) * cos(radians(e.latitude)) * cos(radians(e.longitude) - radians(?)) + sin(radians(?)) * sin(radians(e.latitude)))) <= ?
     `);
     queryParams.push(latitude, longitude, latitude, radius);
   }
@@ -317,15 +321,14 @@ export async function searchEvents(filters: EventSearchFilters = {}, options: Ev
   const [countRows] = await pool.execute<RowDataPacket[]>(countSql, queryParams);
   const total = (countRows[0] as any).total;
   
-  // Get paginated results
-  const offset = (page - 1) * limit;
+  // ✅ 2. INJECT NUMBERS DIRECTLY INTO SQL
+  // We use ${safeLimit} instead of ? to bypass the driver's binding issues
   const dataSql = `
     SELECT 
       e.*,
       c.name as category_name,
       c.icon_url as category_icon,
       u.name as organizer_name,
-      AVG(r.rating) as average_rating,
       COUNT(r.review_id) as review_count,
       COUNT(eb.booking_id) as booking_count
     FROM events e
@@ -336,20 +339,25 @@ export async function searchEvents(filters: EventSearchFilters = {}, options: Ev
     ${whereClause}
     GROUP BY e.event_id
     ORDER BY e.${sort_by} ${sort_order}
-    LIMIT ? OFFSET ?
+    LIMIT ${safeLimit} OFFSET ${safeOffset}
   `;
   
-  const [eventRows] = await pool.execute<RowDataPacket[]>(dataSql, [...queryParams, limit, offset]);
+  // ✅ 3. EXECUTE WITHOUT LIMIT PARAMETERS (They are already in the string)
+  const [eventRows] = await pool.execute<RowDataPacket[]>(dataSql, queryParams);
   
   return {
     events: eventRows,
     total,
-    page,
-    limit
+    page: safePage,
+    limit: safeLimit
   };
 }
 
 export async function getFeaturedEvents(limit: number = 10): Promise<any[]> {
+  // ✅ 1. SANITIZE NUMBER FIRST
+  const safeLimit = Number(limit) || 10;
+
+  // ✅ 2. INJECT DIRECTLY
   const sql = `
     SELECT 
       e.*,
@@ -365,10 +373,11 @@ export async function getFeaturedEvents(limit: number = 10): Promise<any[]> {
     WHERE e.status = 'published' AND e.is_featured = 1 AND e.event_date > NOW()
     GROUP BY e.event_id
     ORDER BY e.event_date ASC
-    LIMIT ?
+    LIMIT ${safeLimit}
   `;
   
-  const [rows] = await pool.execute<RowDataPacket[]>(sql, [limit]);
+  // ✅ 3. EXECUTE WITH EMPTY ARRAY (No parameters to bind)
+  const [rows] = await pool.execute<RowDataPacket[]>(sql, []);
   return rows;
 }
 
