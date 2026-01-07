@@ -135,24 +135,24 @@ export async function createEvent(eventData: {
   organizer_id: string;
   category_id: string;
   title: string;
-  description?: string;
+  description?: string | null;
   venue_name: string;
   venue_address: string;
   city: string;
-  state?: string;
+  state?: string | null;
   country: string;
-  latitude?: number;
-  longitude?: number;
+  latitude?: number | null;
+  longitude?: number | null;
   event_date: Date;
-  event_end_date?: Date;
-  registration_start_date?: Date;
-  registration_end_date?: Date;
-  max_attendees?: number;
-  ticket_price?: number;
-  currency?: string;
-  event_image_url?: string;
-  event_banner_url?: string;
-  tags?: string[];
+  event_end_date?: Date | null;
+  registration_start_date?: Date | null;
+  registration_end_date?: Date | null;
+  max_attendees?: number | null;
+  ticket_price?: number | null;
+  currency?: string | null;
+  event_image_url?: string | null;
+  event_banner_url?: string | null;
+  tags?: string[] | null;
 }): Promise<EventRow> {
   const event_id = uuidv4();
   const sql = `
@@ -167,13 +167,27 @@ export async function createEvent(eventData: {
   const conn = await pool.getConnection();
   try {
     await conn.execute(sql, [
-      event_id, eventData.organizer_id, eventData.category_id, eventData.title, 
-      eventData.description, eventData.venue_name, eventData.venue_address,
-      eventData.city, eventData.state, eventData.country, eventData.latitude,
-      eventData.longitude, eventData.event_date, eventData.event_end_date,
-      eventData.registration_start_date, eventData.registration_end_date,
-      eventData.max_attendees, eventData.ticket_price || 0, eventData.currency || 'USD',
-      eventData.event_image_url, eventData.event_banner_url, 
+      event_id, 
+      eventData.organizer_id, 
+      eventData.category_id, 
+      eventData.title, 
+      eventData.description ?? null, 
+      eventData.venue_name, 
+      eventData.venue_address,
+      eventData.city, 
+      eventData.state ?? null, 
+      eventData.country, 
+      eventData.latitude ?? null,
+      eventData.longitude ?? null, 
+      eventData.event_date, 
+      eventData.event_end_date ?? null,
+      eventData.registration_start_date ?? null, 
+      eventData.registration_end_date ?? null,
+      eventData.max_attendees ?? null, 
+      eventData.ticket_price ?? 0, 
+      eventData.currency || 'GHS',
+      eventData.event_image_url ?? null, 
+      eventData.event_banner_url ?? null, 
       eventData.tags ? JSON.stringify(eventData.tags) : null
     ]);
     

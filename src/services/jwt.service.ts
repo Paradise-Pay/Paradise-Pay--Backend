@@ -4,7 +4,7 @@ dotenv.config();
 
 const ACCESS: Secret = process.env.JWT_ACCESS_SECRET as Secret;
 const REFRESH: Secret = process.env.JWT_REFRESH_SECRET as Secret;
-const ACCESS_EXP = (process.env.ACCESS_TOKEN_EXPIRY ?? '15m') as SignOptions['expiresIn'];
+const ACCESS_EXP = (process.env.ACCESS_TOKEN_EXPIRY ?? '1d') as SignOptions['expiresIn'];
 const REFRESH_EXP = (process.env.REFRESH_TOKEN_EXPIRY ?? '30d') as SignOptions['expiresIn'];
 
 if (!ACCESS || !REFRESH) throw new Error('JWT secrets missing');
