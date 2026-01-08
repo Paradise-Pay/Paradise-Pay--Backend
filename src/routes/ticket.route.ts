@@ -61,7 +61,7 @@ router.use(authenticateToken);
 router.post('/purchase', purchaseTickets);
 router.post('/bookings/:booking_id/confirm', confirmPayment);
 router.post('/bookings/:booking_id/cancel', cancelBooking);
-router.get('/user/tickets', getUserTickets);
+router.get('/user', getUserTickets);
 router.get('/bookings/user', getUserBookings);
 router.get('/bookings/:booking_id', getBookingDetails);
 router.get('/:ticket_id', getTicketDetails);
