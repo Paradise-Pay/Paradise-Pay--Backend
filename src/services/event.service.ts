@@ -26,25 +26,25 @@ export interface CreateEventRequest {
   organizer_id: string;
   category_id: string;
   title: string;
-  description?: string;
+  description?: string | null;
   venue_name: string;
   venue_address: string;
   city: string;
-  state?: string;
+  state?: string | null;
   country: string;
-  latitude?: number;
-  longitude?: number;
+  latitude?: number | null;
+  longitude?: number | null;
   event_date: Date;
-  event_end_date?: Date;
-  registration_start_date?: Date;
-  registration_end_date?: Date;
-  max_attendees?: number;
-  ticket_price?: number;
-  currency?: string;
-  event_image_url?: string;
-  event_banner_url?: string;
-  tags?: string[];
-  is_featured?: boolean;
+  event_end_date?: Date | null;
+  registration_start_date?: Date | null;
+  registration_end_date?: Date | null;
+  max_attendees?: number | null;
+  ticket_price?: number | null;
+  currency?: string | null;
+  event_image_url?: string | null;
+  event_banner_url?: string | null;
+  tags?: string[] | null;
+  is_featured?: boolean | null;
 }
 
 export interface UpdateEventRequest {
