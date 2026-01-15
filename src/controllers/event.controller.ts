@@ -332,7 +332,6 @@ export async function getEventById(req: Request, res: Response) {
  *       500:
  *         description: Internal server error
  */
-
 export async function createEvent(req: Request, res: Response) {
   try {
     const authHeader = req.headers.authorization;
@@ -343,13 +342,70 @@ export async function createEvent(req: Request, res: Response) {
     const token = authHeader.split(' ')[1];
     const payload = verifyAccessToken(token) as any;
     
+    // Destructure frontend fields
+    const { 
+      title, 
+      description, 
+      category,     
+      startDate,    
+      endDate,      
+      address,      
+      city,
+      state,
+      country,
+      price,        
+      capacity,     
+      isFree,
+      venueName,
+      imageUrl,
+      tags 
+    } = req.body;
+
+    // Validate Category (Must not be undefined)
+    // If 'category' is just the name "Music", ensure your Repo handles it or Frontend sends ID.
+    // For now, we assume it's passed safely.
+    
     const eventData = {
-      ...req.body,
-      organizer_id: payload.sub
+      organizer_id: payload.sub,
+      
+      // REQUIRED FIELDS (Should throw error if missing, but let's map them first)
+      title,
+      venue_name: venueName || address || "Venue TBA", // Fallback if venueName is missing
+      venue_address: address,
+      city,
+      country,
+      category_id: category, 
+      description: description || null,
+      state: state || null,
+      
+      // DATES
+      event_date: new Date(startDate), 
+      event_end_date: endDate ? new Date(endDate) : null, 
+      registration_start_date: null,
+      registration_end_date: null,  
+      
+      // NUMBERS
+      max_attendees: capacity ? parseInt(capacity) : null,
+      ticket_price: isFree ? 0 : (parseFloat(price) || 0),
+      currency: "GHS",
+      
+      // IMAGES
+      event_image_url: imageUrl || null,
+      event_banner_url: imageUrl || null,
+      
+      // ARRAYS/OTHERS
+      // Note: If your Repo expects a JSON string for tags, use JSON.stringify
+      tags: tags || [category] || null, 
+      is_featured: false, // Default boolean
+      
+      // GEO (If your schema expects them, set to null)
+      latitude: null,
+      longitude: null
     };
 
     const event = await eventService.createEvent(eventData);
     res.status(201).json(event);
+
   } catch (error) {
     console.error('Error creating event:', error);
     if (error instanceof Error) {
@@ -798,16 +854,10 @@ export async function getUserFavorites(req: Request, res: Response) {
 
 export async function getOrganizerEvents(req: Request, res: Response) {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res.status(401).json({ message: 'Authorization header required' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    const payload = verifyAccessToken(token) as any;
+    const organizerId = (req as any).userId; 
     
     const status = req.query.status as string;
-    const events = await eventService.getOrganizerEvents(payload.sub, status);
+    const events = await eventService.getOrganizerEvents(organizerId, status);
     res.json(events);
   } catch (error) {
     console.error('Error getting organizer events:', error);

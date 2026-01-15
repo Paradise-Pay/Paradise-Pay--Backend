@@ -17,12 +17,40 @@ export type UserRow = {
   updated_at: Date;
 };
 
-export async function createUser({ name, email, phone, passwordHash, role = 'User' }: { name: string; email: string; phone?: string; passwordHash: string; role?: 'User'|'Organizer'|'Admin'; }) {
+export async function createUser({
+  name,
+  email,
+  phone,
+  nickname, 
+  passwordHash,
+  role = 'User'
+}: {
+  name: string;
+  email: string;
+  phone?: string;
+  nickname?: string; 
+  passwordHash: string;
+  role?: 'User' | 'Organizer' | 'Admin';
+}) {
   const id = uuidv4();
-  const sql = `INSERT INTO users (user_id, name, email, phone, password_hash, role) VALUES (?, ?, ?, ?, ?, ?)`;
+  
+  const sql = `
+    INSERT INTO users (user_id, name, email, phone, nickname, password_hash, role) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  
   const conn = await pool.getConnection();
   try {
-    await conn.execute(sql, [id, name, email, phone ?? null, passwordHash, role]);
+    await conn.execute(sql, [
+      id, 
+      name, 
+      email, 
+      phone ?? null, 
+      nickname ?? null, 
+      passwordHash, 
+      role
+    ]);
+    
     const [rows] = await conn.query<RowDataPacket[]>('SELECT * FROM users WHERE user_id = ?', [id]);
     return rows[0] as UserRow;
   } finally {

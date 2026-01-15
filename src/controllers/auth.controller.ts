@@ -14,14 +14,30 @@ const BCRYPT_SALT_ROUNDS = 12;
 
 export async function signup(req: Request, res: Response) {
   try {
-  const { name, email, phone, password, nickname, role } = req.body;
-  console.log(req.body);
-  if (!name || !email || !password || !role) return res.status(400).json({ message: 'Missing fields' });
-  const existing = await findUserByEmail(email);
-  if (existing) return res.status(409).json({ message: 'Email already used' });
+    const { name, email, phone, password, nickname } = req.body;
+    
+    const role = req.body.role || 'User'; 
 
-  const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
-  const user = await createUser({ name, email, phone, passwordHash: hash, role });
+    console.log("Signup Request Body:", req.body);
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Missing fields: name, email, or password' });
+    }
+
+    const existing = await findUserByEmail(email);
+    if (existing) return res.status(409).json({ message: 'Email already used' });
+
+    const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+    
+    const user = await createUser({ 
+      name, 
+      email, 
+      phone, 
+      nickname,
+      passwordHash: hash, 
+      role 
+    });
+    
   // generate card number & qr (simple random here; replace with business format)
   const cardNumber = `PP${Math.floor(100000000 + Math.random()*900000000)}`;
   const cardId = uuidv4();
