@@ -178,6 +178,42 @@
  *         description: Internal server error
  */
 
+/**
+ * @openapi
+ * /api/v1/auth/updateuser/{userId}:
+ *   post:
+ *     summary: Update user details
+ *    tags:
+ *    - Authentication
+ *    parameters:
+ *     - name: userId
+ *      in: path
+ *    required: true
+ *   type: string
+ *    example: 60d0fe4f5311236168a109ca
+ *   requestBody:
+ *    required: true
+ *   content:
+ *    application/json:
+ *    schema:
+ *    type: object
+ *   properties:
+ *    name:
+ *    type: string
+ *   example: John Doe
+ *   phone:
+ *   type: string
+ *  example: +1234567890
+ *  nickname:
+ *  type: string
+ * example: Johnny
+ *    responses:
+ *    200:
+ *    description: User details updated successfully
+ *   500:
+ *   description: Internal server error
+ */
+
 import { Router  } from "express";
 import {
     signup,
@@ -186,7 +222,8 @@ import {
     resetPassword,
     resetPasswordRequest,
     verifyEmailHandler,
-    getResetPasswordForm
+    getResetPasswordForm,
+    updateUserDetails
 } from "../controllers/auth.controller.js"
 
 const router = Router();
@@ -198,5 +235,6 @@ router.post("/reset-password", resetPassword);
 router.post("/reset-password-request", resetPasswordRequest);
 router.get("/reset-password", getResetPasswordForm);
 router.post("/verify-email", verifyEmailHandler);
+router.post("/updateuser/:userId", updateUserDetails);
 
 export default router;

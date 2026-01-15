@@ -618,3 +618,81 @@ export async function getResetPasswordForm(req: Request, res: Response) {
     res.status(400).send('Invalid or expired token');
   }
 }
+
+export async function updateUserDetails(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userId } = req.params;
+    const { name, phone, nickname, role } = req.body;
+
+    // Validate userId
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'User ID is required',
+      });
+    }
+
+    // Ensure at least one field is provided
+    if (!name && !phone && !nickname) {
+      return res.status(400).json({
+        success: false,
+        message: 'At least one field must be provided for update',
+      });
+    }
+
+    // Fetch existing user
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    // Prepare updated values (fallback to existing data)
+    const updatedName = name ?? user.name;
+    const updatedPhone = phone ?? user.phone;
+    const updatedNickname = nickname ?? user.nickname;
+    const updatedRole = role ?? user.role;
+
+    // Optional: Validate role if provided
+    const validRoles = ['user', 'admin', 'organizer'];
+    if (role && !validRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid role provided',
+      });
+    }
+
+    // Execute update
+    const [result]: any = await pool.execute(
+      `
+      UPDATE users
+      SET name = ?, phone = ?, nickname = ?, role = ?
+      WHERE user_id = ?
+      `,
+      [updatedName, updatedPhone, updatedNickname, updatedRole, userId]
+    );
+
+    // Check if update actually happened
+    if (result.affectedRows === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No changes were made',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'User details updated successfully',
+    });
+
+  } catch (error) {
+    console.error('Update User Error:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+}
