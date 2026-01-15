@@ -183,36 +183,42 @@
  * /api/v1/auth/updateuser/{userId}:
  *   post:
  *     summary: Update user details
- *    tags:
- *    - Authentication
- *    parameters:
- *     - name: userId
- *      in: path
- *    required: true
- *   type: string
- *    example: 60d0fe4f5311236168a109ca
- *   requestBody:
- *    required: true
- *   content:
- *    application/json:
- *    schema:
- *    type: object
- *   properties:
- *    name:
- *    type: string
- *   example: John Doe
- *   phone:
- *   type: string
- *  example: +1234567890
- *  nickname:
- *  type: string
- * example: Johnny
- *    responses:
- *    200:
- *    description: User details updated successfully
- *   500:
- *   description: Internal server error
+ *     tags:
+ *       - Authentication
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: 60d0fe4f5311236168a109ca
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: John Doe
+ *               phone:
+ *                 type: string
+ *                 example: +1234567890
+ *               nickname:
+ *                 type: string
+ *                 example: Johnny
+ *     responses:
+ *       200:
+ *         description: User details updated successfully
+ *       400:
+ *         description: Invalid request
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
+
 
 import { Router  } from "express";
 import {
