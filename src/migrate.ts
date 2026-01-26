@@ -16,7 +16,17 @@ async function run() {
     'utf-8'
   );
 
-  const sql = initSql + '\n' + eventSql;
+  const emailSubscriptionsSql = fs.readFileSync(
+    path.join(process.cwd(), 'src', 'migrations', '003_email_subscriptions.sql'),
+    'utf-8'
+  );
+
+  const comprehensiveFeaturesSql = fs.readFileSync(
+    path.join(process.cwd(), 'src', 'migrations', '004_comprehensive_features.sql'),
+    'utf-8'
+  );
+
+  const sql = initSql + '\n' + eventSql + '\n' + emailSubscriptionsSql + '\n' + comprehensiveFeaturesSql;
 
   // connect without DB first
   const conn = await mysql.createConnection({
