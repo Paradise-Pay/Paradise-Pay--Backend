@@ -2,9 +2,7 @@ import express from 'express';
 import 'express-async-errors';
 import dotenv from 'dotenv';
 import cors from 'cors';
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+dotenv.config();
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
