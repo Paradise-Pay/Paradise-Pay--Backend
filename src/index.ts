@@ -28,7 +28,8 @@ app.use(cors({
     const allowedOrigins = [
       'http://localhost:3000',
       'https://getparadisepay.com',
-      'https://www.getparadisepay.com'
+      'https://www.getparadisepay.com',
+      'https://www.comings.getparadisepay.com'
     ];
 
     if (!origin || allowedOrigins.includes(origin)) {
