@@ -6,13 +6,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function run() {
+  // 001_init.sql now includes 002 (event ticketing) and 004 (comprehensive features)
   const initSql = fs.readFileSync(
     path.join(process.cwd(), 'src', 'migrations', '001_init.sql'),
-    'utf-8'
-  );
-  
-  const eventSql = fs.readFileSync(
-    path.join(process.cwd(), 'src', 'migrations', '002_event_ticketing.sql'),
     'utf-8'
   );
 
@@ -21,12 +17,7 @@ async function run() {
     'utf-8'
   );
 
-  const comprehensiveFeaturesSql = fs.readFileSync(
-    path.join(process.cwd(), 'src', 'migrations', '004_comprehensive_features.sql'),
-    'utf-8'
-  );
-
-  const sql = initSql + '\n' + eventSql + '\n' + emailSubscriptionsSql + '\n' + comprehensiveFeaturesSql;
+  const sql = initSql + '\n' + emailSubscriptionsSql;
 
   // connect without DB first
   const conn = await mysql.createConnection({
