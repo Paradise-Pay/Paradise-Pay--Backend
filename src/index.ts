@@ -29,6 +29,7 @@ app.use(cors({
       'http://localhost:3000',
       'https://getparadisepay.com',
       'https://www.getparadisepay.com',
+      'https://comings.getparadisepay.com',
       'https://www.comings.getparadisepay.com'
     ];
 
