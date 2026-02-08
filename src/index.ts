@@ -23,16 +23,16 @@ import mfaRoute from './routes/mfa.route.js'
 import bulkEmailRoute from './routes/bulk-email.route.js'
 
 const app = express();
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://getparadisepay.com',
+  'https://www.getparadisepay.com',
+  'https://comings.getparadisepay.com',
+  'https://www.comings.getparadisepay.com',
+];
+
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'https://getparadisepay.com',
-      'https://www.getparadisepay.com',
-      'https://comings.getparadisepay.com',
-      'https://www.comings.getparadisepay.com'
-    ];
-
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -40,7 +40,18 @@ app.use(cors({
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept'
+  ],
 }));
+
+// 🔑 THIS LINE FIXES THE PREFLIGHT ISSUE
+app.options('*', cors());
+
 app.use(bodyParser.json());
 
 // auth routes
