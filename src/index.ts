@@ -29,6 +29,7 @@ const allowedOrigins = [
   'https://www.getparadisepay.com',
   'https://comings.getparadisepay.com',
   'https://www.comings.getparadisepay.com',
+  'https://api.paradisepay.com',
 ];
 
 app.use(cors({
@@ -107,12 +108,7 @@ app.get('/', (_, res) => res.redirect('/api-docs'));
 
 app.get('/health', (_, res) => res.json({ ok: true }));
 
-const PORT = process.env.PORT;
-
-if (!PORT) {
-  console.error('❌ PORT is not defined');
-  process.exit(1);
-}
+const PORT = process.env.PORT || 3000;
 
 const server = app.listen(Number(PORT), () => {
   console.log(`✅ Server running on port ${PORT}`);

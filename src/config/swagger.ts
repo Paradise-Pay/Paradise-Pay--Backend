@@ -14,7 +14,7 @@ const options: Options = {
         description: 'Local dev server',
       },
       {
-        url: 'https://paradise-pay-backend-production-e0db.up.railway.app/',
+        url: 'https://api.paradisepay.com',
         description: 'Production server',
       },
     ],
