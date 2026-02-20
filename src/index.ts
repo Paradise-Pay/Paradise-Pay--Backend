@@ -29,7 +29,6 @@ const allowedOrigins = [
   'https://www.getparadisepay.com',
   'https://comings.getparadisepay.com',
   'https://www.comings.getparadisepay.com',
-  'https://api.paradisepay.com',
 ];
 
 app.use(cors({
