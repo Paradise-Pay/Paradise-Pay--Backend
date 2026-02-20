@@ -69,7 +69,7 @@ app.use('/api/v1/tickets', ticketRoute);
 app.use('/api/v1/integrations', integrationRoute);
 
 // coming soon routes
-app.use('/api/v1/coming-soon', comingSoonRoute);
+app.use('/api/v1/coming-soon', comingSoonRoute); 
 
 // google auth routes
 app.use('/api/v1/auth', googleAuthRoute);
