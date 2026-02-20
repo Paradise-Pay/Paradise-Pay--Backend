@@ -14,7 +14,7 @@ const options: Options = {
         description: 'Local dev server',
       },
       {
-        url: 'https://api.paradisepay.com',
+        url: 'https://api.getparadisepay.com',
         description: 'Production server',
       },
     ],
