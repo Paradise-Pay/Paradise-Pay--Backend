@@ -4,7 +4,13 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
-dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
+import fs from 'fs';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const localEnv = path.resolve(__dirname, '..', '.env');
+const homeEnv = path.join('/home', process.env.USER || 'u284087133', 'paradisepay.env');
+
+dotenv.config({ path: fs.existsSync(localEnv) ? localEnv : homeEnv });
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';

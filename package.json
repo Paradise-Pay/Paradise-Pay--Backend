@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc && npm run migrate",
+    "build": "tsc",
     "start": "node dist/index.js",
-    "migrate": "tsx src/migrate.ts",
+    "migrate": "node dist/migrate.js",
     "seed": "tsx src/seeders/seed.ts",
     "seed:dev": "npm run migrate && npm run seed",
     "test:queries": "tsx src/test/queries.test.ts",
