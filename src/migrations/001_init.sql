@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS railway CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE railway;
+-- Database is created via hosting provider (e.g. Hostinger hPanel)
+-- Connection uses DB_NAME from environment variables
 
 -- users
 CREATE TABLE IF NOT EXISTS users (
