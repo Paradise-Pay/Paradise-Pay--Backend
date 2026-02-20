@@ -68,7 +68,7 @@ async function debugSeeding() {
 }
 
 // Run debug if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   debugSeeding()
     .then(() => {
       console.log('🎉 Debug completed!');

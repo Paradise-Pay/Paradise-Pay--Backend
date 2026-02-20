@@ -5,9 +5,9 @@ import {
   getTicketHandler,
   updateTicketHandler,
   addResponseHandler
-} from '../controllers/support.controller.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
-import { findUserById } from '../repositories/user.repo.js';
+} from '../controllers/support.controller';
+import { verifyAccessToken } from '../services/jwt.service';
+import { findUserById } from '../repositories/user.repo';
 
 const router = Router();
 

@@ -18,9 +18,9 @@ import {
   isEventFavorited,
   EventSearchFilters,
   EventListOptions
-} from '../repositories/event.repo.js';
-import { integrationService } from './integration.service.js';
-import { sendEmail } from './email.service.js';
+} from '../repositories/event.repo';
+import { integrationService } from './integration.service';
+import { sendEmail } from './email.service';
 
 export interface CreateEventRequest {
   organizer_id: string;

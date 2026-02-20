@@ -5,8 +5,8 @@ import {
   getFeaturedEvents,
   getAllEventCategories,
   getEventsByOrganizer
-} from '../repositories/event.repo.js';
-import { 
+} from '../repositories/event.repo';
+import {
   getUserTickets,
   getBookingWithDetails,
   markTicketAsUsed,
@@ -15,8 +15,8 @@ import {
   validateTicketForEntry,
   getBookingStats,
   getTicketStats
-} from '../repositories/ticket.repo.js';
-import { seedTestData, createTestBooking } from '../seeders/test-data.js';
+} from '../repositories/ticket.repo';
+import { seedTestData, createTestBooking } from '../seeders/test-data';
 
 async function runQueryTests() {
   console.log('🧪 Running database query tests...\n');
@@ -119,7 +119,7 @@ async function runQueryTests() {
 }
 
 // Run tests if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   runQueryTests()
     .then(() => {
       console.log('✅ All query tests passed!');

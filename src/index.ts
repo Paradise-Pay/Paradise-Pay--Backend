@@ -2,33 +2,31 @@ import express from 'express';
 import 'express-async-errors';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const localEnv = path.resolve(__dirname, '..', '.env');
 const homeEnv = path.join('/home', process.env.USER || 'u284087133', 'paradisepay.env');
 
 dotenv.config({ path: fs.existsSync(localEnv) ? localEnv : homeEnv });
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './config/swagger.js';
-import authRoute from './routes/auth.route.js'
-import eventRoute from './routes/event.route.js'
-import ticketRoute from './routes/ticket.route.js'
-import integrationRoute from './routes/integration.route.js'
-import comingSoonRoute from './routes/coming-soon.route.js'
-import googleAuthRoute from './routes/google-auth.route.js'
-import bundleRoute from './routes/bundle.route.js'
-import financeRoute from './routes/finance.route.js'
-import adminRoute from './routes/admin.route.js'
-import promoCodeRoute from './routes/promo-code.route.js'
-import supportRoute from './routes/support.route.js'
-import statisticsRoute from './routes/statistics.route.js'
-import deletionRequestRoute from './routes/deletion-request.route.js'
-import mfaRoute from './routes/mfa.route.js'
-import bulkEmailRoute from './routes/bulk-email.route.js'
+import swaggerSpec from './config/swagger';
+import authRoute from './routes/auth.route'
+import eventRoute from './routes/event.route'
+import ticketRoute from './routes/ticket.route'
+import integrationRoute from './routes/integration.route'
+import comingSoonRoute from './routes/coming-soon.route'
+import googleAuthRoute from './routes/google-auth.route'
+import bundleRoute from './routes/bundle.route'
+import financeRoute from './routes/finance.route'
+import adminRoute from './routes/admin.route'
+import promoCodeRoute from './routes/promo-code.route'
+import supportRoute from './routes/support.route'
+import statisticsRoute from './routes/statistics.route'
+import deletionRequestRoute from './routes/deletion-request.route'
+import mfaRoute from './routes/mfa.route'
+import bulkEmailRoute from './routes/bulk-email.route'
 
 const app = express();
 const allowedOrigins = [

@@ -3,11 +3,11 @@ import {
   findUserByGoogleId,
   createGoogleUser,
   findUserByEmail,
-} from '../repositories/user.repo.js';
-import { signAccessToken, signRefreshToken } from '../services/jwt.service.js';
-import { storeRefreshToken } from '../repositories/token.repo.js';
+} from '../repositories/user.repo';
+import { signAccessToken, signRefreshToken } from '../services/jwt.service';
+import { storeRefreshToken } from '../repositories/token.repo';
 import axios from 'axios';
-import pool from '../db/db.js';
+import pool from '../db/db';
 import { v4 as uuidv4 } from 'uuid';
 
 interface GoogleTokenInfo {

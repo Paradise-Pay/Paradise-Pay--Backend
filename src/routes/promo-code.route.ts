@@ -5,9 +5,9 @@ import {
   validatePromoCodeHandler,
   updatePromoCodeHandler,
   deletePromoCodeHandler
-} from '../controllers/promo-code.controller.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
-import { findUserById } from '../repositories/user.repo.js';
+} from '../controllers/promo-code.controller';
+import { verifyAccessToken } from '../services/jwt.service';
+import { findUserById } from '../repositories/user.repo';
 
 const router = Router();
 

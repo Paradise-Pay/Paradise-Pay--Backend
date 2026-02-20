@@ -4,8 +4,8 @@ import {
   getDeletionRequestByUserId,
   getAllDeletionRequests,
   updateDeletionRequest
-} from '../repositories/deletion-request.repo.js';
-import pool from '../db/db.js';
+} from '../repositories/deletion-request.repo';
+import pool from '../db/db';
 
 export async function createDeletionRequestHandler(req: Request, res: Response) {
   try {

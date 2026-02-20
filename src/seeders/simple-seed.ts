@@ -87,7 +87,7 @@ async function simpleSeed() {
 }
 
 // Run if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   simpleSeed()
     .then(() => {
       console.log('✅ Simple seed completed successfully!');

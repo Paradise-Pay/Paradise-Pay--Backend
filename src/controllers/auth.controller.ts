@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { createUser, findUserByEmail, findUserById, setEmailVerified, updatePassword } from '../repositories/user.repo.js';
-import { signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken } from '../services/jwt.service.js';
-import { storeRefreshToken, revokeRefreshTokenByHash, findRefreshToken } from '../repositories/token.repo.js';
+import { createUser, findUserByEmail, findUserById, setEmailVerified, updatePassword } from '../repositories/user.repo';
+import { signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken } from '../services/jwt.service';
+import { storeRefreshToken, revokeRefreshTokenByHash, findRefreshToken } from '../repositories/token.repo';
 import { v4 as uuidv4 } from 'uuid';
 import dotenv from 'dotenv';
-import { sendEmail } from '../services/email.service.js';
-import pool from '../db/db.js';
+import { sendEmail } from '../services/email.service';
+import pool from '../db/db';
 
 dotenv.config();
 

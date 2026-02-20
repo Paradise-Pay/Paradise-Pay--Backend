@@ -11,9 +11,9 @@ import {
   getTicketDetails,
   getBookingStatistics,
   getTicketQRCode
-} from '../controllers/ticket.controller.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
-import { findUserById } from '../repositories/user.repo.js';
+} from '../controllers/ticket.controller';
+import { verifyAccessToken } from '../services/jwt.service';
+import { findUserById } from '../repositories/user.repo';
 
 const router = Router();
 

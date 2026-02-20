@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { findUserById, setMfaSecret, enableMfa, disableMfa } from '../repositories/user.repo.js';
-import { createOrUpdateDevice, getUserDevices, removeDevice, removeAllUserDevices } from '../repositories/device.repo.js';
+import { findUserById, setMfaSecret, enableMfa, disableMfa } from '../repositories/user.repo';
+import { createOrUpdateDevice, getUserDevices, removeDevice, removeAllUserDevices } from '../repositories/device.repo';
 import QRCode from 'qrcode';
 import * as speakeasy from 'speakeasy';
 

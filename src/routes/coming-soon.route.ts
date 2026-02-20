@@ -83,7 +83,7 @@
  */
 
 import { Router } from 'express';
-import { subscribeEmail } from '../controllers/coming-soon.controller.js';
+import { subscribeEmail } from '../controllers/coming-soon.controller';
 
 const router = Router();
 

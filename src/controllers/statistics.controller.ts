@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { getTransactionStatistics } from '../repositories/finance.repo.js';
-import { getAllBundles, getBundlesByOrganizer } from '../repositories/bundle.repo.js';
-import { getEventsByOrganizer, searchEvents } from '../repositories/event.repo.js';
-import pool from '../db/db.js';
+import { getTransactionStatistics } from '../repositories/finance.repo';
+import { getAllBundles, getBundlesByOrganizer } from '../repositories/bundle.repo';
+import { getEventsByOrganizer, searchEvents } from '../repositories/event.repo';
+import pool from '../db/db';
 import { RowDataPacket } from 'mysql2';
 
 export async function getEventStatistics(req: Request, res: Response) {

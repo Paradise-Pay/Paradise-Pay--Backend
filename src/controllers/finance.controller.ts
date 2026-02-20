@@ -4,7 +4,7 @@ import {
   getTransactions,
   getTransactionStatistics,
   updateTransactionStatus
-} from '../repositories/finance.repo.js';
+} from '../repositories/finance.repo';
 
 export async function getTransactionsHandler(req: Request, res: Response) {
   try {

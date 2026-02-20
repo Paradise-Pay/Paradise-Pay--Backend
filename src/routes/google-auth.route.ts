@@ -27,7 +27,7 @@
  */
 
 import { Router } from 'express';
-import { googleSignIn } from '../controllers/google-auth.controller.js';
+import { googleSignIn } from '../controllers/google-auth.controller';
 
 const router = Router();
 

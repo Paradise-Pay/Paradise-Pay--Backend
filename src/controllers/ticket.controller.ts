@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { ticketService } from '../services/ticket.service.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
+import { ticketService } from '../services/ticket.service';
+import { verifyAccessToken } from '../services/jwt.service';
 
 /**
  * @openapi

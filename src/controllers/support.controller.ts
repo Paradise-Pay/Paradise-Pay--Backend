@@ -5,7 +5,7 @@ import {
   getTicketWithResponses,
   updateTicket,
   addTicketResponse
-} from '../repositories/support.repo.js';
+} from '../repositories/support.repo';
 
 export async function createTicketHandler(req: Request, res: Response) {
   try {

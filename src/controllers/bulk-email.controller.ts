@@ -5,10 +5,10 @@ import {
   getCampaignById,
   updateCampaignStatus,
   incrementCampaignSentCount
-} from '../repositories/email-campaign.repo.js';
-import { sendEmail } from '../services/email.service.js';
-import { getAllUsers } from '../repositories/user.repo.js';
-import pool from '../db/db.js';
+} from '../repositories/email-campaign.repo';
+import { sendEmail } from '../services/email.service';
+import { getAllUsers } from '../repositories/user.repo';
+import pool from '../db/db';
 import { RowDataPacket } from 'mysql2';
 
 async function getAllEmailSubscriptions() {

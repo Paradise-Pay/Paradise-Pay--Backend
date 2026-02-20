@@ -230,7 +230,7 @@ import {
     verifyEmailHandler,
     getResetPasswordForm,
     updateUserDetails
-} from "../controllers/auth.controller.js"
+} from "../controllers/auth.controller"
 
 const router = Router();
 

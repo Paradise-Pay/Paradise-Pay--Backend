@@ -6,7 +6,7 @@ import {
   validatePromoCode,
   updatePromoCode,
   deletePromoCode
-} from '../repositories/promo-code.repo.js';
+} from '../repositories/promo-code.repo';
 
 export async function createPromoCodeHandler(req: Request, res: Response) {
   try {

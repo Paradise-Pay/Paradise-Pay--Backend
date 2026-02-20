@@ -16,10 +16,10 @@ import {
   getBookingStats,
   getTicketStats,
   TicketPurchaseData
-} from '../repositories/ticket.repo.js';
-import { getTicketTypesByEvent, updateTicketTypeAvailability } from '../repositories/event.repo.js';
-import { qrService } from './qr.service.js';
-import { sendEmail } from './email.service.js';
+} from '../repositories/ticket.repo';
+import { getTicketTypesByEvent, updateTicketTypeAvailability } from '../repositories/event.repo';
+import { qrService } from './qr.service';
+import { sendEmail } from './email.service';
 
 export interface PurchaseTicketRequest {
   user_id: string;

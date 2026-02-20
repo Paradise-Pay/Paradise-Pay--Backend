@@ -1,4 +1,4 @@
-import pool from '../db/db.js';
+import pool from '../db/db';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { v4 as uuidv4 } from 'uuid';
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { createEmailSubscription, findEmailSubscriptionByEmail, reactivateEmailSubscription } from '../repositories/email-subscription.repo.js';
-import { sendEmail } from '../services/email.service.js';
+import { createEmailSubscription, findEmailSubscriptionByEmail, reactivateEmailSubscription } from '../repositories/email-subscription.repo';
+import { sendEmail } from '../services/email.service';
 
 export async function subscribeEmail(req: Request, res: Response) {
   try {

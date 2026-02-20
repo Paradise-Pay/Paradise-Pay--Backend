@@ -1,4 +1,4 @@
-import pool from '../db/db.js';
+import pool from '../db/db';
 
 async function testDatabaseConnection() {
   console.log('🔍 Testing database connection...');
@@ -36,7 +36,7 @@ async function testDatabaseConnection() {
 }
 
 // Run test if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   testDatabaseConnection()
     .then(() => {
       console.log('🎉 Database test passed!');

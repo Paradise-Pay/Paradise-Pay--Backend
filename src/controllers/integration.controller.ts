@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { integrationService } from '../services/integration.service.js';
-import { eventService } from '../services/event.service.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
+import { integrationService } from '../services/integration.service';
+import { eventService } from '../services/event.service';
+import { verifyAccessToken } from '../services/jwt.service';
 
 /**
  * @openapi

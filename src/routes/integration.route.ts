@@ -5,9 +5,9 @@ import {
   getThirdPartyCategories,
   getTicketmasterEventDetails,
   getEventbriteEventDetails
-} from '../controllers/integration.controller.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
-import { findUserById } from '../repositories/user.repo.js';
+} from '../controllers/integration.controller';
+import { verifyAccessToken } from '../services/jwt.service';
+import { findUserById } from '../repositories/user.repo';
 
 const router = Router();
 

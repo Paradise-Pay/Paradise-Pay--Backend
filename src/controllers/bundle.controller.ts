@@ -9,8 +9,8 @@ import {
   addEventToBundle,
   removeEventFromBundle,
   getBundleWithEvents
-} from '../repositories/bundle.repo.js';
-import { getEventById } from '../repositories/event.repo.js';
+} from '../repositories/bundle.repo';
+import { getEventById } from '../repositories/event.repo';
 
 export async function createBundleHandler(req: Request, res: Response) {
   try {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createEvent } from '../repositories/event.repo.js';
+import { createEvent } from '../repositories/event.repo';
 
 export interface TicketmasterEvent {
   id: string;

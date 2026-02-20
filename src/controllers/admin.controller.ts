@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { getAllUsers, updateUserPlan } from '../repositories/user.repo.js';
-import { searchEvents, getAllEventCategories } from '../repositories/event.repo.js';
-import { getTransactions, getTransactionStatistics } from '../repositories/finance.repo.js';
-import { getAllBundles } from '../repositories/bundle.repo.js';
-import pool from '../db/db.js';
+import { getAllUsers, updateUserPlan } from '../repositories/user.repo';
+import { searchEvents, getAllEventCategories } from '../repositories/event.repo';
+import { getTransactions, getTransactionStatistics } from '../repositories/finance.repo';
+import { getAllBundles } from '../repositories/bundle.repo';
+import pool from '../db/db';
 import { RowDataPacket } from 'mysql2';
 
 export async function listAllUsers(req: Request, res: Response) {

@@ -7,9 +7,9 @@ import {
   getActiveDevicesHandler,
   removeDeviceHandler,
   registerDeviceHandler
-} from '../controllers/mfa.controller.js';
-import { verifyAccessToken } from '../services/jwt.service.js';
-import { findUserById } from '../repositories/user.repo.js';
+} from '../controllers/mfa.controller';
+import { verifyAccessToken } from '../services/jwt.service';
+import { findUserById } from '../repositories/user.repo';
 
 const router = Router();
 

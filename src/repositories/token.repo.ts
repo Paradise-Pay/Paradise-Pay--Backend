@@ -1,4 +1,4 @@
-import pool from '../db/db.js';
+import pool from '../db/db';
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
 
