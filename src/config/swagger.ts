@@ -6,7 +6,7 @@ const options: Options = {
     info: {
       title: 'ParadisePay API',
       version: '1.0.0',
-      description: 'API documentation for ParadisePay - Digital Payment and Event Ticketing System',
+      description: 'API documentation for ParadisePay - Digital Payment and  Event Ticketing System',
     },
     servers: [
       {
